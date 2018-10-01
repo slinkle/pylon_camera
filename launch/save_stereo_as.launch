@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="respawn" default="false" />
+    <arg name="node_name" default="save_stereo_as" />
+
+    <node name="$(arg node_name)" pkg="pylon_camera"
+          type="save_stereo_image.py" output="screen"
+          respawn="$(arg respawn)">
+    </node>
+</launch>

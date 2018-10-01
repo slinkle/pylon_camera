@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="respawn" default="false" />
+    <arg name="debug" default="false" />
+    <arg name="camera_name" default="pylon" />
+    
+    
+    <group ns="$(arg camera_name)" >
+    	<group ns="left" >
+	    <arg name="config_file" default="$(find pylon_camera)/config/left.yaml" />
+	    <arg name="node_name" default="camera_left" />
+
+	    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+	    <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
+
+	    <node name="$(arg node_name)" pkg="pylon_camera" type="pylon_camera_node" output="screen"
+		  respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
+		<rosparam command="load" file="$(arg config_file)" />
+	    </node>
+    	</group>
+
+    	<group ns="right" >
+	    <arg name="config_file" default="$(find pylon_camera)/config/right.yaml" />
+	    <arg name="node_name" default="camera_right" />
+
+	    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+	    <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
+
+	    <node name="$(arg node_name)" pkg="pylon_camera" type="pylon_camera_node" output="screen"
+		  respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
+		<rosparam command="load" file="$(arg config_file)" />
+	    </node>
+    	</group>
+
+    <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc">
+      <param name="approximate_sync" value="true"/>
+    </node>
+
+  </group>
+
+</launch>
