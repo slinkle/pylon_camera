@@ -14,6 +14,7 @@ import cv2
 bridge = CvBridge()
 left=False
 right=False
+pid = 0
 
 def left_image_callback(msg):
     #print("Received a left image!")
@@ -28,7 +29,7 @@ def left_image_callback(msg):
 	else:
 	    # Save your OpenCV2 image as a jpeg 
 	    print("going to save a left image: ",msg.header.stamp)
-	    cv2.imwrite('/home/csc104/jym/catkin_ws/src/pylon_camera/image/left_image.png', cv2_img)
+	    cv2.imwrite('/home/csc104/jym/catkin_ws/src/pylon_camera/image/left_%d.png' % pid, cv2_img)
 	    left=False
 
 def right_image_callback(msg):
@@ -44,15 +45,17 @@ def right_image_callback(msg):
 	else:
 	    # Save your OpenCV2 image as a jpeg 
 	    print("going to save a right image: ",msg.header.stamp)
-	    cv2.imwrite('/home/csc104/jym/catkin_ws/src/pylon_camera/image/right_image.png', cv2_img)
+	    cv2.imwrite('/home/csc104/jym/catkin_ws/src/pylon_camera/image/right_%d.png' % pid, cv2_img)
 	    right=False
 
 def key_callback(msg):
     global left
     global right
+    global pid
     print("Received a key to save image!")
     left=True
     right=True
+    pid += 1
 	
 
 def main():
